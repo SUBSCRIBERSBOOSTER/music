@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>KING PLAYER</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('back.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      font-family: 'Segoe UI', 'Arial Rounded MT Bold', sans-serif;
+    }
+
+    .title {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      font-size: 48px;
+      font-weight: bold;
+      color: white;
+      border-radius: 20px;
+      padding: 10px 20px;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 10px white;
+      cursor: pointer;
+    }
+
+    .title:hover {
+      text-shadow: 0 0 20px white, 0 0 30px white;
+      transform: scale(1.05);
+    }
+
+    .player-box {
+      position: absolute;
+      top: 120px;
+      left: 30px;
+      width: 50%;
+      height: 55vh;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      padding: 20px;
+    }
+
+    .player-box:hover {
+      transform: translateY(5px) scale(0.98);
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .album-art {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-image: url('CD.png');
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .rotating {
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .controls {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .controls img {
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+    }
+
+    .controls img:active {
+      transform: scale(0.9);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+
+    .controls img:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+
+    .pause-btn {
+      display: none;
+    }
+
+    .prev-btn {
+      transition: transform 0.3s ease, box-shadow 0.2s ease;
+    }
+
+    .prev-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+
+    .song-title {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      margin: 10px;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 5px;
+      background-color: #ddd;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background-color: #4CAF50;
+      border-radius: 5px;
+    }
+
+    .playlist {
+      position: absolute;
+      top: 120px;
+      right: 30px;
+      width: 30%;
+      height: 50vh;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      overflow-y: auto;
+    }
+
+    .playlist ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .playlist li {
+      padding: 10px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .playlist li:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
+
+    .volume-control {
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .volume-control input[type="range"] {
+      width: 80%;
+    }
+
+    .upload-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .upload-btn:hover {
+      background-color: #45a049;
+    }
+
+    /* Added the 'by KENGEGA' at the bottom center */
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .footer:hover {
+      color: #4CAF50;
+      text-shadow: 0 0 10px #4CAF50, 0 0 20px #4CAF50;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="title">KING PLAYER</div>
+
+  <div class="player-box">
+    <div class="album-art" id="albumArt"></div>
+    <div class="song-title" id="songTitle">Song Name</div>
+    <div class="controls">
+      <img src="next.png" alt="Previous" class="prev-btn" style="transform: scaleX(-1);">
+      <div>
+        <img src="play.png" alt="Play" id="playBtn">
+        <img src="pause.png" alt="Pause" id="pauseBtn" class="pause-btn">
+      </div>
+      <img src="next.png" alt="Next">
+      <img src="stop.png" alt="Stop">
+    </div>
+
+    <!-- Progressive Bar -->
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Volume Control -->
+    <div class="volume-control">
+      <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="1">
+    </div>
+
+    <!-- Audio Player -->
+    <audio id="audioPlayer" src="your-audio-file.mp3"></audio>
+    
+    <!-- Upload Song -->
+    <input type="file" id="uploadSong" accept="audio/*" class="upload-btn">
+  </div>
+
+  <div class="playlist">
+    <h3>Playlist</h3>
+    <ul id="playlist">
+      <li data-src="your-audio-file.mp3">Song 1</li>
+      <li data-src="another-audio-file.mp3">Song 2</li>
+      <li data-src="yet-another-file.mp3">Song 3</li>
+    </ul>
+  </div>
+
+  <!-- Footer with 'by KENGEGA' -->
+  <div class="footer">by KENGEGA</div>
+
+  <script>
+    const playBtn = document.getElementById('playBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const albumArt = document.getElementById('albumArt');
+    const progressBar = document.getElementById('progressBar');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const songTitle = document.getElementById('songTitle');
+    const prevBtn = document.querySelector('.prev-btn');
+    const volumeControl = document.getElementById('volumeControl');
+    const uploadSong = document.getElementById('uploadSong');
+    const playlist = document.getElementById('playlist');
+
+    let isPlaying = false;
+    let currentSongIndex = 0;
+
+    // Function to play the song
+    function playSong() {
+      audioPlayer.play();
+      playBtn.style.display = 'none';
+      pauseBtn.style.display = 'inline';
+      albumArt.classList.add('rotating');
+      updateProgressBar();
+      isPlaying = true;
+    }
+
+    // Function to pause the song
+    function pauseSong() {
+      audioPlayer.pause();
+      playBtn.style.display = 'inline';
+      pauseBtn.style.display = 'none';
+      albumArt.classList.remove('rotating');
+      isPlaying = false;
+    }
+
+    // Update the song title and play the song when clicking on the playlist
+    playlist.addEventListener('click', (e) => {
+      if (e.target.tagName === 'LI') {
+        const selectedSong = e.target;
+        songTitle.textContent = selectedSong.textContent;
+        audioPlayer.src = selectedSong.getAttribute('data-src');
+        if (isPlaying) {
+          playSong();
+        }
+      }
+    });
+
+    // Event listeners
+    playBtn.addEventListener('click', playSong);
+    pauseBtn.addEventListener('click', pauseSong);
+
+    // Event listener for volume control
+    volumeControl.addEventListener('input', () => {
+      audioPlayer.volume = volumeControl.value;
+    });
+
+    // Progress bar update
+    function updateProgressBar() {
+      setInterval(() => {
+        const currentTime = audioPlayer.currentTime;
+        const duration = audioPlayer.duration;
+        const progressPercentage = (currentTime / duration) * 100;
+        progressBar.style.width = progressPercentage + '%';
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
